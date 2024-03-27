@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { questions } from '../data/questions';
 import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import AlertWindow from './AlertWindow'; // Import the AlertWindow component
 
 const Quiz: React.FC = () => {
 	const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -9,6 +10,8 @@ const Quiz: React.FC = () => {
 	const [showAnswerStatus, setShowAnswerStatus] = useState(false);
 	const [answerStatus, setAnswerStatus] = useState(false); // true if correct, false if incorrect
 	const [showResult, setShowResult] = useState(false);
+	const [showModal, setShowModal] = useState(false); // State for controlling the visibility of the modal
+	const [modalMessage, setModalMessage] = useState(''); // State for storing the message to display in the modal
 
 	const handleOptionSelect = (option: string) => {
 		setSelectedOption(option);
@@ -16,12 +19,10 @@ const Quiz: React.FC = () => {
 	};
 
 	const handleNextQuestion = () => {
-		if (selectedOption === questions[currentQuestion].correctAnswer) {
-			setScore(score + 1);
-			setAnswerStatus(true);
-		} else {
-			setAnswerStatus(false);
-		}
+		const isCorrect = selectedOption === questions[currentQuestion].correctAnswer;
+		setScore(score + (isCorrect ? 1 : 0));
+		setAnswerStatus(isCorrect);
+		setShowModal(true);
 		setShowAnswerStatus(true);
 
 		if (currentQuestion + 1 < questions.length) {
@@ -35,6 +36,7 @@ const Quiz: React.FC = () => {
 		setCurrentQuestion(0);
 		setScore(0);
 		setShowResult(false);
+		setShowModal(false);
 	};
 
 	return (
@@ -66,12 +68,18 @@ const Quiz: React.FC = () => {
 							</TouchableOpacity>
 						))}
 					</View>
-					{showAnswerStatus && (
+					{/* {showAnswerStatus && (
 						<Text style={[styles.answerStatus, answerStatus ? styles.correct : styles.incorrect]}>{answerStatus ? 'Correct!' : 'Incorrect!'}</Text>
-					)}
+					)} */}
 					<Button
-						title='Next'
+						title='Submit'
 						onPress={handleNextQuestion}
+					/>
+					{/* Render the modal */}
+					<AlertWindow
+						visible={showModal}
+						message={answerStatus ? 'Correct!' : 'Incorrect!'}
+						closeModal={() => setShowModal(false)}
 					/>
 				</View>
 			)}
