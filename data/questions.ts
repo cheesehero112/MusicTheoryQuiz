@@ -1,9 +1,11 @@
 'use strict';
+import { Image } from 'react-native';
+
 export const questions = [
 	// Beginner
 	{
-		question: 'What is this note? : (img: middle C on treble clef)',
-		image: '(img: middle C on treble clef)',
+		question: 'What is this note?',
+		image: require('../assets/notes-images/Treble-C.png'),
 		options: ['C', 'E', 'F'],
 		correctAnswer: 'C',
 	},

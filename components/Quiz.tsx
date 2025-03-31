@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { questions } from '../data/questions';
-import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Button, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import AlertWindow from './AlertWindow'; // Import the AlertWindow component
 
 const Quiz: React.FC = () => {
@@ -57,6 +57,13 @@ const Quiz: React.FC = () => {
 					<Text style={styles.questionText}>Current Score {score}</Text>
 					<Text style={styles.questionText}>Question {currentQuestion + 1}</Text>
 					<Text style={styles.questionText}>{questions[currentQuestion].question}</Text>
+
+					{/* Render the question image */}
+					<Image
+						source={questions[currentQuestion].image} // Use the image from the question data
+						style={styles.image}
+					/>
+
 					<View>
 						{questions[currentQuestion].options.map((option, index) => (
 							<TouchableOpacity
@@ -68,13 +75,12 @@ const Quiz: React.FC = () => {
 							</TouchableOpacity>
 						))}
 					</View>
-					{/* {showAnswerStatus && (
-						<Text style={[styles.answerStatus, answerStatus ? styles.correct : styles.incorrect]}>{answerStatus ? 'Correct!' : 'Incorrect!'}</Text>
-					)} */}
+
 					<Button
 						title='Submit'
 						onPress={handleNextQuestion}
 					/>
+
 					{/* Render the modal */}
 					<AlertWindow
 						visible={showModal}
@@ -127,6 +133,13 @@ const styles = StyleSheet.create({
 	},
 	incorrect: {
 		color: 'red',
+	},
+	image: {
+		width: 200, // Adjust width as needed
+		height: 200, // Adjust height as needed
+		marginTop: 20,
+		marginBottom: 20,
+		alignSelf: 'center', // Centers the image horizontally within its parent
 	},
 });
 
